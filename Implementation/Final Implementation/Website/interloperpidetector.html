@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <script src="https://www.gstatic.com/firebasejs/5.5.1/firebase.js"></script>
+    <title>Interloper PI Detector</title>
+    <style>
+        #motionsensor {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #motionsensor td, #motionsensor th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #motionsensor tr:nth-child(even){background-color: #f2f2f2;}
+
+        #motionsensor tr:hover {background-color: #ddd;}
+
+        #motionsensor th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: black;
+            color: white;
+        }
+        .button {
+            background-color: black; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h1>Interloper PI Detector Motion Sensor History Trigger Dates Record</h1>
+
+
+<table id="motionsensor">
+    <tr>
+        <th>Motion Sensor Trigger Time</th>
+    </tr>
+    <tr>
+        <td id="object"></td>
+    </tr>
+</table>
+</br>
+<button class="button" onclick="exportTableToExcel('motionsensor', 'motionsensor-data')">Export Table Data To Excel File</button>
+<script>
+    (function(){
+
+
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyC0k72cW3c9269zuVHXwVkl2RV5TX_ozZ4",
+            authDomain: "interloper-pi-detector.firebaseapp.com",
+            databaseURL: "https://interloper-pi-detector-default-rtdb.firebaseio.com",
+            projectId: "interloper-pi-detector",
+            storageBucket: "interloper-pi-detector.appspot.com",
+            messagingSenderId: "203002723801"
+        };  
+        firebase.initializeApp(config);
+
+        /* Data Event Listeners Start */
+
+
+
+        /* Stop */
+
+
+    }());
+
+    //Data Object Change Listener
+    const preObject = document.getElementById('object');
+    const dbRefObject = firebase.database().ref().child('sensorTriggered');
+
+    dbRefObject.on('value', snap => {
+
+        console.log(snap.val());
+        preObject.innerText = JSON.stringify(snap.val(),null, 2);
+
+    }, function(error) {
+        // The fetch failed.
+        console.error(error);
+    });
+
+    function exportTableToExcel(tableID, filename = ''){
+        var downloadLink;
+        var dataType = 'application/vnd.ms-excel';
+        var tableSelect = document.getElementById(tableID);
+        var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+
+        // Specify file name
+        filename = filename?filename+'.xls':'excel_data.xls';
+
+        // Create download link element
+        downloadLink = document.createElement("a");
+
+        document.body.appendChild(downloadLink);
+
+        if(navigator.msSaveOrOpenBlob){
+            var blob = new Blob(['\ufeff', tableHTML], {
+                type: dataType
+            });
+            navigator.msSaveOrOpenBlob( blob, filename);
+        }else{
+            // Create a link to the file
+            downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+
+            // Setting the file name
+            downloadLink.download = filename;
+
+            //triggering the function
+            downloadLink.click();
+        }
+    }
+</script>
+
+
+</body>
+
+</html>
+</html>

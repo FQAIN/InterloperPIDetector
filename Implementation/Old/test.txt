@@ -1,0 +1,9 @@
+ apiKey: "AIzaSyC0k72cW3c9269zuVHXwVkl2RV5TX_ozZ4",
+  authDomain: "interloper-pi-detector.firebaseapp.com",
+  databaseURL: "https://interloper-pi-detector-default-rtdb.firebaseio.com",
+  projectId: "interloper-pi-detector",
+  storageBucket: "interloper-pi-detector.appspot.com",
+  messagingSenderId: "203002723801",
+  appId: "1:203002723801:web:31a494a6d82ae7a368edc8",
+  measurementId: "G-68NLMPZM6K"
+
